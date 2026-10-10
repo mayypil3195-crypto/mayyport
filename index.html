@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAYYPIL — Portfolio | Persona 3 Reload</title>
+  <meta name="description" content="MAYYPIL — Game Planner, QA Manager, Community Manager. Persona 3 Reload UI Engine.">
+  <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+  <meta name="theme-color" content="#001233">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="fonts/Rodin Pro EB.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap"></noscript>
+  <link rel="stylesheet" href="css/style.css?v=39">
+</head>
+<body>
+  <!-- Mobile / Small Screen Notification -->
+  <div class="mobile-warning">
+    <p>Sorry, this website is not supported for your device.</p>
+    <p>Try viewing this site on a computer!</p>
+  </div>
+
+
+  <!-- Persona 3 Reload - Clean Sea Blue Loading Screen -->
+  <div id="loading-screen" class="p3r-loading-screen" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <!-- Bottom-Right Loading HUD -->
+    <div class="loading-hud-bottom">
+      <div class="loading-text-row">
+        <h2 class="loading-title">NOW LOADING<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span></h2>
+      </div>
+
+      <div class="loading-bar-wrap">
+        <div class="loading-track">
+          <div id="loading-bar" class="loading-fill"></div>
+        </div>
+        <div id="loading-percent" class="loading-percent">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Canvas -->
+  <main class="p3r-main">
+    <!-- Atmospheric Side Vignette: Subtle soft faded black on the sides across all pages -->
+    <div class="p3r-global-vignette" aria-hidden="true"></div>
+
+    <!-- Background Videos in Menu Utama: bg-intro then bg-loop -->
+    <video
+      id="background-video-intro"
+      class="background-video bg-video-intro"
+      src="assets/bg-intro.mp4"
+      muted
+      playsinline
+      preload="metadata"
+    ></video>
+    <video
+      id="background-video-loop"
+      class="background-video bg-video-loop"
+      src="assets/bg-loop.mp4"
+      loop
+      muted
+      playsinline
+      preload="none"
+    ></video>
+
+    <!-- Side Watermark Number (01, 02, etc.) -->
+    <div id="side-number" class="side-number">
+      <span>01</span>
+    </div>
+
+    <!-- Non-interactive Profile Name Header (Pojok Kanan Atas) -->
+    <div id="menu-profile-header" class="menu-profile-header" aria-hidden="true">
+      <div class="profile-name-text">MAYYPIL</div>
+      <div class="profile-accent-line"></div>
+    </div>
+
+    <!-- Menu Column: Options Stack -->
+    <div id="menu-column" class="menu-column">
+      <!-- Options Stack -->
+      <div id="options-list" class="options-list">
+        <!-- Options injected by main.js -->
+      </div>
+    </div>
+
+    <!-- Bottom Right HUD & Controls -->
+    <div class="hud-controls">
+      <div class="buttons-row">
+        <div class="control-item">
+          <div class="control-key">ENTER</div>
+          <span class="control-text">Confirm</span>
+        </div>
+        <div class="control-item">
+          <div class="control-key">ESC</div>
+          <span class="control-text">Close</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Persona 3 Reload Soundtrack HUD Player -->
+  <aside id="p3r-audio-hud" class="p3r-audio-hud" aria-label="Soundtrack Player">
+    <div class="audio-hud-inner">
+      <div class="audio-hud-tag">BGM TRACK</div>
+      <div class="audio-hud-main">
+        <button id="audio-toggle-btn" class="audio-disk-btn" aria-label="Toggle Soundtrack Play/Pause">
+          <div id="audio-visualizer-icon" class="audio-visualizer-icon playing">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </button>
+        <div class="audio-track-info">
+          <div class="audio-marquee-wrap">
+            <div id="audio-marquee-text" class="audio-marquee-text">DJMAX — Tell Me &nbsp;&nbsp;///&nbsp;&nbsp; DJMAX — Tell Me &nbsp;&nbsp;///&nbsp;&nbsp; </div>
+          </div>
+          <div class="audio-status-row">
+            <span id="audio-status-badge" class="audio-status-badge">PLAYING</span>
+            <button id="audio-mute-btn" class="audio-mute-btn" aria-label="Toggle Mute">
+              <svg id="audio-volume-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Preloaded Audio Elements for Instant Zero-Delay Playback -->
+  <audio id="sfx-menu-utama-el" src="sfx/menu-utama.mp3" preload="none"></audio>
+  <audio id="sfx-navigation-el" src="sfx/navigation.wav" preload="none"></audio>
+  <audio id="sfx-close-menu-el" src="sfx/close-menu.mp3" preload="none"></audio>
+  <audio id="bg-music" src="assets/tell_me.mp3" loop preload="auto"></audio>
+
+  <!-- Circle Page Transition Anchor Container -->
+  <div id="wavy-transition-portal" class="wavy-transition-portal" aria-hidden="true" style="display: none;"></div>
+
+  <!-- Persona 3 Reload - Social Link Style Project Screen -->
+  <section id="project-page" class="p3r-slink-screen" role="region" aria-label="Projects Social Link Screen" aria-hidden="true">
+    <!-- Project Screen Animated Video Background (Makoto Wallpaper) -->
+    <div class="slink-video-container" aria-hidden="true">
+      <video id="slink-bg-video" class="slink-bg-video" loop muted playsinline preload="none">
+        <source src="assets/skills-bg.mp4" type="video/mp4">
+      </video>
+      <div class="slink-video-overlay" aria-hidden="true"></div>
+    </div>
+
+    <!-- Main Viewport Layer matching user screenshot -->
+    <div class="slink-viewport">
+      <!-- Left Column: PROJECT Header + Cards Stack -->
+      <div class="slink-left-column">
+        <!-- Profile Sub-header matching Atlus P3R Layout -->
+        <div class="slink-profile-header" aria-hidden="true">
+          <div class="slink-profile-name">MAYYPIL</div>
+        </div>
+
+        <!-- Persona 3 Reload Shattered Geometric Header Banner -->
+        <div class="p3r-geometric-header" id="slink-project-div">
+          <!-- Fractured Background Sky-Blue Band (Extending from left) -->
+          <div class="p3r-shard-back-band" aria-hidden="true"></div>
+          <!-- Fractured Cyan Peak Shard (Top-right acute blade) -->
+          <div class="p3r-shard-cyan-peak" aria-hidden="true"></div>
+          <!-- Fractured Right Edge Accent Blade -->
+          <div class="p3r-shard-right-cyan" aria-hidden="true"></div>
+          <!-- Main Dark Midnight Blue Razor-Cut Banner -->
+          <div class="p3r-header-slash-main" aria-hidden="true"></div>
+          <!-- Floating Broken Glass Triangular Shards -->
+          <div class="p3r-shard-float p3r-shard-float-1" aria-hidden="true"></div>
+          <div class="p3r-shard-float p3r-shard-float-2" aria-hidden="true"></div>
+          <!-- Crisp Pure White Title -->
+          <h1 class="p3r-banner-title" id="slink-project-text">PROJECT</h1>
+        </div>
+
+        <!-- Vertical Angled Cards Stack -->
+        <div id="slink-cards-container" class="slink-cards-container" role="tablist" aria-label="Project List">
+          <!-- Dynamically populated by main.js with exact P3R card design -->
+        </div>
+      </div>
+
+      <!-- Right Column: Dynamic Project Details & Image Preview -->
+      <div class="slink-preview-column" id="slink-preview-column" aria-label="Target Project Preview">
+        <div class="preview-card-frame">
+          <div class="preview-card-header">
+            <span class="preview-system-tag">ARCHIVE // TARGET INSPECT</span>
+            <span id="preview-index-tag" class="preview-index-tag">01 / 18</span>
+          </div>
+          <div class="preview-image-box">
+            <img id="preview-cover-img" src="assets/anime_scouts_x.png" alt="Project Cover" class="preview-cover-img">
+            <div class="preview-image-scanlines" aria-hidden="true"></div>
+            <div class="preview-corner-bracket top-left" aria-hidden="true"></div>
+            <div class="preview-corner-bracket top-right" aria-hidden="true"></div>
+            <div class="preview-corner-bracket bottom-left" aria-hidden="true"></div>
+            <div class="preview-corner-bracket bottom-right" aria-hidden="true"></div>
+          </div>
+          <div class="preview-info-box">
+            <div class="preview-title-row">
+              <div id="preview-numeral-badge" class="preview-numeral-badge">I</div>
+              <h2 id="preview-title-text" class="preview-title-text">ANIME SCOUTS X</h2>
+            </div>
+            <div id="preview-tier-badge" class="preview-tier-badge tier-1">TIER 1 // PLANNING & DIRECTION</div>
+            <div class="preview-roles-label">ASSIGNED ROLES</div>
+            <div id="preview-roles-container" class="preview-roles-container">
+              <span class="role-pill role-pill-cyan">PLANNER</span>
+              <span class="role-pill role-pill-cyan">LEAD TESTER</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Right HUD: Controls matching Menu Utama style (Guide removed) -->
+      <div class="slink-bottom-hud">
+        <div class="buttons-row">
+          <button id="slink-confirm-btn" class="control-item slink-hud-btn" aria-label="Confirm Selection">
+            <div class="control-key">ENTER</div>
+            <span class="control-text">Confirm</span>
+          </button>
+          <button id="slink-back-btn" class="control-item slink-hud-btn" aria-label="Back to Main Menu">
+            <div class="control-key">ESC</div>
+            <span class="control-text">Back</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Persona 3 Reload - SKILLS STATS PAGE
+       Dedicated Screen matching P3R Aesthetic with Stats Bars concept from P5
+       ========================================================================== -->
+  <section id="skill-page" class="p3r-slink-screen p3r-skill-screen" role="region" aria-label="Skills Stats Screen" aria-hidden="true">
+    <!-- Video Background (Makoto Wallpaper) -->
+    <div class="slink-video-container" aria-hidden="true">
+      <video id="skill-bg-video" class="slink-bg-video" loop muted playsinline preload="none">
+        <source src="assets/makoto-wallpaper.mp4" type="video/mp4">
+      </video>
+      <div class="slink-video-overlay" aria-hidden="true"></div>
+    </div>
+
+    <!-- Main Viewport Layer -->
+    <div class="slink-viewport p3r-skill-viewport">
+      <!-- Left Column: Profile Name + SKILLS Header + Category Tabs + Skill Stats Grid -->
+      <div class="slink-left-column p3r-skill-left-column">
+        <!-- Profile Sub-header -->
+        <div class="slink-profile-header" aria-hidden="true">
+          <div class="slink-profile-name">MAYYPIL</div>
+        </div>
+
+        <!-- Persona 3 Reload Shattered Geometric Header Banner for SKILLS -->
+        <div class="p3r-geometric-header" id="skill-header-div">
+          <!-- Fractured Background Sky-Blue Band (Solid Light-Blue Shadow) -->
+          <div class="p3r-shard-back-band" aria-hidden="true"></div>
+          <!-- Main Dark Midnight Blue Razor-Cut Banner -->
+          <div class="p3r-header-slash-main" aria-hidden="true"></div>
+          <!-- Crisp Pure White Title -->
+          <h1 class="p3r-banner-title" id="skill-header-text">SKILLS</h1>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="p3r-skill-tabs" id="skill-tabs-nav" role="tablist" aria-label="Skill Categories">
+          <!-- Dynamically populated by main.js: PLANNING, DIRECTION, QA & TESTING, TOOLS -->
+        </div>
+
+        <!-- Skills Stats Container -->
+        <div id="p3r-skills-container" class="p3r-skills-container" role="region" aria-label="Skill Stats List">
+          <!-- Dynamically populated by main.js with stats skill rows and animated meters -->
+        </div>
+      </div>
+
+      <!-- Bottom Right HUD: Controls matching Menu Utama & Project style -->
+      <div class="slink-bottom-hud">
+        <div class="buttons-row">
+          <button id="skill-tab-prev-btn" class="control-item slink-hud-btn" aria-label="Previous Category">
+            <div class="control-key">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </div>
+            <span class="control-text">Prev</span>
+          </button>
+          <button id="skill-tab-next-btn" class="control-item slink-hud-btn" aria-label="Next Category">
+            <div class="control-key">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+            <span class="control-text">Next</span>
+          </button>
+          <button id="skill-back-btn" class="control-item slink-hud-btn" aria-label="Close Skills Screen">
+            <div class="control-key">ESC</div>
+            <span class="control-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Persona 3 Reload - ABOUT ME PAGE
+       Dedicated Screen: Left-docked Profile, Photo Frame Placeholder & Bio
+       ========================================================================== -->
+  <section id="about-page" class="p3r-slink-screen p3r-about-screen" role="region" aria-label="About Screen" aria-hidden="true">
+    <!-- Video Background (Makoto Wallpaper) -->
+    <div class="slink-video-container" aria-hidden="true">
+      <video id="about-bg-video" class="slink-bg-video" loop muted playsinline preload="none">
+        <source src="assets/about-bg.mp4" type="video/mp4">
+      </video>
+      <div class="slink-video-overlay" aria-hidden="true"></div>
+    </div>
+
+    <!-- Main Viewport Layer -->
+    <div class="slink-viewport p3r-about-viewport">
+      <!-- Left Column: Profile Name + ABOUT Header + Left-Docked Info Card -->
+      <div class="slink-left-column p3r-about-left-column">
+        <!-- Profile Sub-header -->
+        <div class="slink-profile-header" aria-hidden="true">
+          <div class="slink-profile-name">MAYYPIL</div>
+        </div>
+
+        <!-- Persona 3 Reload Shattered Geometric Header Banner for ABOUT -->
+        <div class="p3r-geometric-header" id="about-header-div">
+          <!-- Fractured Background Sky-Blue Band (Solid Light-Blue Shadow) -->
+          <div class="p3r-shard-back-band" aria-hidden="true"></div>
+          <!-- Main Dark Midnight Blue Razor-Cut Banner -->
+          <div class="p3r-header-slash-main" aria-hidden="true"></div>
+          <!-- Crisp Pure White Title -->
+          <h1 class="p3r-banner-title" id="about-header-text">ABOUT</h1>
+        </div>
+
+        <!-- Left-Docked About Card -->
+        <div class="p3r-about-card" role="region" aria-label="About Profile Card">
+          <div class="p3r-about-card-inner">
+            
+            <!-- Top Section: User Photo + Identity -->
+            <div class="p3r-about-top-row">
+              <!-- User Profile Photo -->
+              <div class="p3r-photo-box" aria-label="Profile Photo">
+                <img src="assets/425daccf0e6ca102bf5fa0c5ff0b7e47.jpg" alt="MAYYPIL" class="p3r-photo-img" />
+              </div>
+
+              <!-- Identity Details -->
+              <div class="p3r-about-identity">
+                <h2 class="p3r-about-name">MAYYPIL</h2>
+                <div class="p3r-about-title">Game Planner, QA Manager, Community Manager</div>
+              </div>
+            </div>
+
+            <!-- Profile Parameters & Status Grid -->
+            <div class="p3r-about-stats-grid">
+              <div class="about-stat-row">
+                <span class="stat-badge">ROLE</span>
+                <span class="stat-value">Planner</span>
+              </div>
+              <div class="about-stat-row">
+                <span class="stat-badge">TIMEZONE</span>
+                <span class="stat-value">GMT+3</span>
+              </div>
+              <div class="about-stat-row">
+                <span class="stat-badge">STATUS</span>
+                <span class="stat-value highlight-cyan">Available for Planning &amp; Direction</span>
+              </div>
+            </div>
+
+            <!-- Bio Explanations in English -->
+            <div class="p3r-about-bio">
+              <p class="p3r-about-p">
+                Focused on <strong>core gameplay loops</strong>, <strong>feature roadmaps</strong>, <strong>economy progression</strong>, and <strong>QA pipelines</strong>.
+              </p>
+              <p class="p3r-about-p">
+                Specializing in end-to-end system game design documents, economy balance, and multi-tier QA test suites across commercial and community titles.
+              </p>
+            </div>
+
+            <!-- Inspiring Philosophy (Persona 3 Style) -->
+            <div class="p3r-about-quote">
+              <div class="p3r-quote-mark" aria-hidden="true">“</div>
+              <div class="p3r-quote-content">
+                <blockquote class="p3r-quote-text">A great game is built on unbreakable core loops and meticulous testing.</blockquote>
+                <cite class="p3r-quote-author">Game Direction Philosophy</cite>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Right HUD: Controls matching Menu Utama style -->
+      <div class="slink-bottom-hud">
+        <div class="buttons-row">
+          <button id="about-back-btn" class="control-item slink-hud-btn" aria-label="Close About Screen">
+            <div class="control-key">ESC</div>
+            <span class="control-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Persona 3 Reload - CONTACT PAGE
+       TODAY'S New Message / Phone Mail UI Style with Slanted Pad & Alerts
+       ========================================================================== -->
+  <section id="contact-page" class="p3r-slink-screen p3r-contact-screen" role="region" aria-label="Contact Mail Screen" aria-hidden="true">
+    <!-- Video Background (Atmospheric Loop) -->
+    <div class="slink-video-container" aria-hidden="true">
+      <video id="contact-bg-video" class="slink-bg-video" loop muted playsinline preload="none">
+        <source src="assets/contact-bg.mp4" type="video/mp4">
+      </video>
+      <div class="slink-video-overlay p3r-contact-overlay" aria-hidden="true"></div>
+    </div>
+
+    <!-- Main Viewport Layer -->
+    <div class="slink-viewport p3r-contact-viewport">
+      
+      <!-- Slanted Message Pad Container -->
+      <div class="p3r-mail-phone-wrap">
+
+        <!-- SVG Phone Chassis Background: Distinct White Linear Frame & Extended Black Body -->
+        <svg class="p3r-mail-chassis-svg" viewBox="0 0 880 860" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="p3r-mail-black-body" 
+                   points="10,28 875,56 875,836 10,858" 
+                   fill="#070a12" />
+
+          <polygon class="p3r-mail-white-frame" 
+                   points="22,50 832,96 828,806 18,838" 
+                   fill="none" 
+                   stroke="#ffffff" 
+                   stroke-width="4.5" 
+                   stroke-linejoin="round" />
+        </svg>
+        
+        <!-- Phone Inner Content Container -->
+        <div class="p3r-mail-phone-card">
+          
+          <!-- Top Watermark & Header -->
+          <div class="p3r-mail-header-row">
+            <div class="p3r-mail-watermark" aria-hidden="true">MAIL</div>
+          </div>
+
+          <!-- Messages / Contact Items List -->
+          <div class="p3r-mail-list-container" role="list" aria-label="Contact Channels">
+            
+            <!-- Item 1: Discord (Click to Copy) -->
+            <div id="discord-copy-btn" class="p3r-mail-row active" data-idx="0" role="button" tabindex="0" aria-label="Copy Discord Tag mayypil139">
+              <div class="p3r-mail-icon-block p3r-mail-discord" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+              </div>
+              <div class="p3r-mail-content-block">
+                <div class="p3r-mail-sender-row">
+                  <span class="p3r-mail-sender-name">Discord (Click to Copy)</span>
+                </div>
+                <div class="p3r-mail-row-line" aria-hidden="true"></div>
+                <div class="p3r-mail-msg-text">mayypil139</div>
+              </div>
+              <div class="p3r-copy-indicator" id="discord-copy-badge">COPY TAG</div>
+            </div>
+
+            <!-- Slot 2: Status & Timezone Info -->
+            <div class="p3r-mail-row" data-idx="1" role="listitem">
+              <div class="p3r-mail-icon-block p3r-mail-info" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+              </div>
+              <div class="p3r-mail-content-block">
+                <div class="p3r-mail-sender-row">
+                  <span class="p3r-mail-sender-name">Availability &amp; Timezone</span>
+                </div>
+                <div class="p3r-mail-row-line" aria-hidden="true"></div>
+                <div class="p3r-mail-msg-text">GMT+3 · Available for Planning &amp; Direction</div>
+              </div>
+            </div>
+
+            <!-- Empty Slot 3 (Kosong) -->
+            <div class="p3r-mail-row p3r-mail-row-empty" aria-hidden="true">
+              <div class="p3r-mail-icon-block p3r-mail-empty-icon" aria-hidden="true"></div>
+              <div class="p3r-mail-content-block">
+                <div class="p3r-mail-sender-row">
+                  <span class="p3r-mail-sender-name"></span>
+                </div>
+                <div class="p3r-mail-row-line" aria-hidden="true"></div>
+                <div class="p3r-mail-msg-text p3r-mail-empty-text">No Message</div>
+              </div>
+            </div>
+
+            <!-- Empty Slot 4 (Kosong) -->
+            <div class="p3r-mail-row p3r-mail-row-empty" aria-hidden="true">
+              <div class="p3r-mail-icon-block p3r-mail-empty-icon" aria-hidden="true"></div>
+              <div class="p3r-mail-content-block">
+                <div class="p3r-mail-sender-row">
+                  <span class="p3r-mail-sender-name"></span>
+                </div>
+                <div class="p3r-mail-row-line" aria-hidden="true"></div>
+                <div class="p3r-mail-msg-text p3r-mail-empty-text">No Message</div>
+              </div>
+            </div>
+
+            <!-- Empty Slot 5 (Kosong) -->
+            <div class="p3r-mail-row p3r-mail-row-empty" aria-hidden="true">
+              <div class="p3r-mail-icon-block p3r-mail-empty-icon" aria-hidden="true"></div>
+              <div class="p3r-mail-content-block">
+                <div class="p3r-mail-sender-row">
+                  <span class="p3r-mail-sender-name"></span>
+                </div>
+                <div class="p3r-mail-row-line" aria-hidden="true"></div>
+                <div class="p3r-mail-msg-text p3r-mail-empty-text">No Message</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Bottom Left HUD: ESC Back button placed in bottom-left corner per user request -->
+      <div class="p3r-contact-bottom-hud">
+        <div class="buttons-row">
+          <button id="contact-back-btn" class="control-item slink-hud-btn" aria-label="Close Contact Screen">
+            <div class="control-key">ESC</div>
+            <span class="control-text">Close</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- P3R Toast Notification for Copy Actions -->
+  <div id="p3r-toast-notification" class="p3r-toast-notification" aria-live="polite">
+    <div class="toast-content">
+      <span class="toast-title">COMMUNICATION LINK</span>
+      <span id="toast-message" class="toast-message">Discord tag copied: mayypil139</span>
+    </div>
+  </div>
+
+  <!-- Portfolio Detail Modal -->
+  <div id="portfolio-modal" class="portfolio-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span id="modal-tag" class="modal-tag">CATEGORY</span>
+          <h2 id="modal-title" class="modal-title">SKILL</h2>
+        </div>
+        <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="2" y1="2" x2="12" y2="12"></line>
+            <line x1="12" y1="2" x2="2" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p id="modal-summary" style="font-size: 1.25rem; color: #7de6fd; font-style: italic; margin-bottom: 1rem;"></p>
+        <div id="modal-cards-container" class="modal-content-grid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="control-item">
+          <div class="control-key">ESC</div>
+          <span class="control-text" id="modal-footer-close" style="cursor: pointer;">Close</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js?v=40" defer></script>
+</body>
+</html>
