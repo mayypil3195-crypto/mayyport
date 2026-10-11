@@ -307,8 +307,11 @@ const slinkData = [
   }
 ];
 
-// Preload all project images into memory immediately on startup
+// Deferred project image preloader (executes only after background video / window init)
+let hasPreloadedProjectImages = false;
 function preloadProjectImages() {
+  if (hasPreloadedProjectImages) return;
+  hasPreloadedProjectImages = true;
   slinkData.forEach((item) => {
     if (item.image) {
       const img = new Image();
@@ -316,7 +319,6 @@ function preloadProjectImages() {
     }
   });
 }
-preloadProjectImages();
 
 const skillTabsList = [
   { id: "planning", code: "01", label: "PLANNING" },
@@ -1618,6 +1620,12 @@ function switchToLoopVideo() {
 if (bgVideoIntro) {
   bgVideoIntro.addEventListener("ended", switchToLoopVideo);
   bgVideoIntro.addEventListener("error", switchToLoopVideo);
+  bgVideoIntro.addEventListener("playing", () => {
+    setTimeout(preloadProjectImages, 1500);
+  }, { once: true });
+  bgVideoIntro.addEventListener("canplay", () => {
+    setTimeout(preloadProjectImages, 2500);
+  }, { once: true });
   bgVideoIntro.addEventListener("timeupdate", () => {
     if (!hasSwitchedToLoop && bgVideoIntro.duration > 0) {
       if (bgVideoIntro.currentTime >= bgVideoIntro.duration * 0.4) {
@@ -1631,6 +1639,44 @@ if (bgVideoIntro) {
     }
   });
 }
+
+if (bgVideoLoop) {
+  bgVideoLoop.addEventListener("playing", () => {
+    setTimeout(preloadProjectImages, 1500);
+  }, { once: true });
+}
+
+// Window load fallback: wait until critical media finishes before preloading assets
+window.addEventListener("load", () => {
+  setTimeout(preloadProjectImages, 1500);
+});
+
+// Autoplay safety & smooth initial video playback
+function attemptBackgroundVideoAutoplay() {
+  const targetVideo = bgVideoIntro || bgVideoLoop;
+  if (targetVideo) {
+    targetVideo.muted = true;
+    targetVideo.defaultMuted = true;
+    const playPromise = targetVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Handle autoplay restrictions smoothly by retrying on user interaction
+        const resumeOnInteraction = () => {
+          if (targetVideo.paused) {
+            targetVideo.play().catch(() => {});
+          }
+          document.removeEventListener("click", resumeOnInteraction);
+          document.removeEventListener("keydown", resumeOnInteraction);
+          document.removeEventListener("touchstart", resumeOnInteraction);
+        };
+        document.addEventListener("click", resumeOnInteraction, { once: true });
+        document.addEventListener("keydown", resumeOnInteraction, { once: true });
+        document.addEventListener("touchstart", resumeOnInteraction, { once: true });
+      });
+    }
+  }
+}
+attemptBackgroundVideoAutoplay();
 
 // --------------------------------------------------------------------------
 // 12. Loading Screen & Experience Entry Sequence
