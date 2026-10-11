@@ -126,9 +126,21 @@ const options = [
 ];
 
 const slinkData = [
-  // TIER 1: PLANNING & DIRECTION
+  // TIER 1: PLANNING & DIRECTION (FEATURED)
   {
     numeral: "I",
+    title: "Anime Royale",
+    subtitle: "Manager, Community Manager, Creative Director",
+    tier: 1,
+    tierLabel: "TIER 1 // MANAGEMENT & CREATIVE DIRECTION",
+    tag: "MANAGEMENT & CREATIVE DIRECTION",
+    roles: ["Manager", "Community Manager", "Creative Director"],
+    description: "Led community operations, staff management, and creative direction covering visual identity, update content, and feature roadmaps.",
+    status: "Active",
+    image: "assets/anime-royale.png"
+  },
+  {
+    numeral: "II",
     title: "Anime Scouts X",
     subtitle: "Planner, Lead Tester",
     tier: 1,
@@ -137,7 +149,7 @@ const slinkData = [
     image: "assets/anime_scouts_x.png"
   },
   {
-    numeral: "II",
+    numeral: "III",
     title: "Anime Rupture",
     subtitle: "Creative Director",
     tier: 1,
@@ -146,22 +158,13 @@ const slinkData = [
     image: "assets/8f9jvxf.png"
   },
   {
-    numeral: "III",
+    numeral: "IV",
     title: "Horizon Production",
     subtitle: "Game Designer",
     tier: 1,
     tierLabel: "TIER 1 // PLANNING & DIRECTION",
     roles: ["Game Designer"],
     image: "assets/93C15DB5-D1F2-4C3E-80CA-F47689E13EF5.jpg"
-  },
-  {
-    numeral: "IV",
-    title: "Anime Arise",
-    subtitle: "Planner",
-    tier: 1,
-    tierLabel: "TIER 1 // PLANNING & DIRECTION",
-    roles: ["Planner"],
-    image: "assets/noFilter.png"
   },
   {
     numeral: "V",
@@ -292,6 +295,16 @@ const slinkData = [
     tierLabel: "TIER 3 // FORMER POSITIONS (ARCHIVE)",
     roles: ["Retired Tester"],
     image: "assets/9951f44a635052280c7f8874efb09d47-1.jpg"
+  },
+  {
+    numeral: "XIX",
+    title: "Anime Arise",
+    subtitle: "Archived Planner",
+    tier: 3,
+    tierLabel: "TIER 3 // FORMER POSITIONS (ARCHIVE)",
+    roles: ["Planner", "Archived"],
+    status: "Archived",
+    image: "assets/noFilter.png"
   }
 ];
 
@@ -1074,7 +1087,10 @@ function updateProjectPreview(index) {
   const previewNumeralBadge = document.getElementById("preview-numeral-badge");
   const previewTitleText = document.getElementById("preview-title-text");
   const previewTierBadge = document.getElementById("preview-tier-badge");
+  const previewStatusBadge = document.getElementById("preview-status-badge");
   const previewRolesContainer = document.getElementById("preview-roles-container");
+  const previewDescBox = document.getElementById("preview-desc-box");
+  const previewDescText = document.getElementById("preview-desc-text");
 
   if (previewIndexTag) {
     previewIndexTag.textContent = `${(index + 1).toString().padStart(2, "0")} / ${slinkData.length}`;
@@ -1095,6 +1111,15 @@ function updateProjectPreview(index) {
     previewTierBadge.textContent = item.tierLabel;
     previewTierBadge.className = `preview-tier-badge tier-${item.tier}`;
   }
+  if (previewStatusBadge) {
+    if (item.status) {
+      previewStatusBadge.textContent = item.status.toUpperCase();
+      previewStatusBadge.className = `preview-status-badge status-${item.status.toLowerCase()}`;
+      previewStatusBadge.style.display = "inline-block";
+    } else {
+      previewStatusBadge.style.display = "none";
+    }
+  }
   if (previewRolesContainer && item.roles) {
     previewRolesContainer.innerHTML = "";
     item.roles.forEach((r) => {
@@ -1106,6 +1131,14 @@ function updateProjectPreview(index) {
       pill.textContent = r;
       previewRolesContainer.appendChild(pill);
     });
+  }
+  if (previewDescBox && previewDescText) {
+    if (item.description) {
+      previewDescText.textContent = item.description;
+      previewDescBox.style.display = "block";
+    } else {
+      previewDescBox.style.display = "none";
+    }
   }
 }
 

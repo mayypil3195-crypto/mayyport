@@ -2428,6 +2428,59 @@ body.about-screen-active .character-viewport {
   color: rgba(255, 255, 255, 0.65);
 }
 
+.preview-status-badge {
+  display: inline-block;
+  margin-left: auto;
+  font-family: var(--font-rodin), sans-serif;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  padding: 3px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.preview-status-badge.status-active {
+  background: rgba(0, 212, 230, 0.2);
+  border: 1px solid #00d4e6;
+  color: #77fefc;
+  box-shadow: 0 0 10px rgba(0, 212, 230, 0.4);
+  text-shadow: 0 0 6px rgba(0, 212, 230, 0.5);
+}
+
+.preview-status-badge.status-archived {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #c0d0df;
+}
+
+.preview-desc-box {
+  margin-top: 4px;
+}
+
+.preview-desc-label {
+  font-family: var(--font-rodin), sans-serif;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.preview-desc-text {
+  font-family: var(--font-rodin), sans-serif;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: rgba(215, 240, 255, 0.9);
+  margin: 0;
+  padding: 7px 11px;
+  background: rgba(0, 20, 50, 0.45);
+  border-left: 2.5px solid #00d4e6;
+  border-radius: 0 2px 2px 0;
+  letter-spacing: 0.02em;
+}
+
 /* ==========================================================================
    PERSONA 3 RELOAD - SOUNDTRACK HUD PLAYER (CORNER WIDGET)
    ========================================================================== */
