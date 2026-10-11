@@ -135,7 +135,6 @@ const slinkData = [
     tierLabel: "TIER 1 // MANAGEMENT & CREATIVE DIRECTION",
     tag: "MANAGEMENT & CREATIVE DIRECTION",
     roles: ["Manager", "Community Manager", "Creative Director"],
-    description: "Led community operations, staff management, and creative direction covering visual identity, update content, and feature roadmaps.",
     status: "Active",
     image: "assets/anime-royale.png"
   },
@@ -1132,8 +1131,8 @@ function updateProjectPreview(index) {
       previewRolesContainer.appendChild(pill);
     });
   }
-  if (previewDescBox && previewDescText) {
-    if (item.description) {
+  if (previewDescBox) {
+    if (item.description && previewDescText) {
       previewDescText.textContent = item.description;
       previewDescBox.style.display = "block";
     } else {
@@ -1903,7 +1902,59 @@ document.addEventListener("keydown", (e) => {
 // --------------------------------------------------------------------------
 // 14. Initialization & Window Exports
 // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// Real P3R / Guns.lol-Style Profile Viewer Counter
+// --------------------------------------------------------------------------
+async function initViewCounter() {
+  const counterEl = document.getElementById("view-count-val");
+  if (!counterEl) return;
+
+  const endpoints = [
+    "https://counterapi.com/api/mayypil_portfolio/views",
+    "https://api.counterapi.dev/v1/mayypil_portfolio/views/up"
+  ];
+
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const rawCount = data.value ?? data.count ?? (typeof data === "number" ? data : null);
+      if (rawCount !== null && rawCount !== undefined && !isNaN(Number(rawCount))) {
+        animateViewCounter(counterEl, Number(rawCount));
+        return;
+      }
+    } catch (_) {}
+  }
+  counterEl.textContent = "---";
+}
+
+function animateViewCounter(el, target) {
+  if (isNaN(target)) {
+    el.textContent = "---";
+    return;
+  }
+  const duration = 1200;
+  const start = 0;
+  const startTime = performance.now();
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * easeOut);
+    el.textContent = current.toLocaleString();
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = target.toLocaleString();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
 renderOptions();
+initViewCounter();
 
 const urlParams = new URLSearchParams(window.location.search);
 const initialSelect = parseInt(urlParams.get("select"), 10);

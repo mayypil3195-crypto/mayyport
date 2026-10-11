@@ -660,6 +660,62 @@ body.project-screen-active .side-number {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 1.25rem;
+}
+
+/* P3R / Guns.lol-Style Profile Viewer Counter Badge */
+.p3r-view-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(8, 18, 38, 0.85);
+  border: 1.5px solid rgba(0, 217, 255, 0.45);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.35), inset 0 0 8px rgba(0, 217, 255, 0.12);
+  transform: skewX(-14deg);
+  pointer-events: auto;
+  user-select: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.p3r-view-badge:hover {
+  border-color: #00d4e6;
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.6), inset 0 0 10px rgba(0, 217, 255, 0.25);
+}
+
+.p3r-view-badge > * {
+  transform: skewX(14deg);
+}
+
+.p3r-view-badge .view-icon {
+  font-size: 0.8rem;
+  line-height: 1;
+  color: #00d4e6;
+  filter: drop-shadow(0 0 5px rgba(0, 212, 230, 0.8));
+}
+
+.p3r-view-badge .view-label {
+  font-family: var(--font-rodin), sans-serif;
+  font-weight: 800;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #77fefc;
+  text-shadow: 0 0 6px rgba(0, 212, 230, 0.5);
+}
+
+.p3r-view-badge #view-count-val {
+  font-family: var(--font-skip), monospace;
+  font-weight: 900;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 212, 230, 0.7);
+  min-width: 1.6rem;
+  text-align: right;
 }
 
 .buttons-row {
@@ -2456,6 +2512,7 @@ body.about-screen-active .character-viewport {
 }
 
 .preview-desc-box {
+  display: none;
   margin-top: 4px;
 }
 
