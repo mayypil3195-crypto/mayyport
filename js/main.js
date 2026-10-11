@@ -297,8 +297,8 @@ const slinkData = [
   },
   {
     numeral: "XIX",
-    title: "Anime Arise",
-    subtitle: "Archived Planner",
+    title: "Anime Arise(scrapped)",
+    subtitle: "Planner",
     tier: 3,
     tierLabel: "TIER 3 // FORMER POSITIONS (ARCHIVE)",
     roles: ["Planner", "Archived"],
