@@ -307,6 +307,17 @@ const slinkData = [
   }
 ];
 
+// Preload all project images into memory immediately on startup
+function preloadProjectImages() {
+  slinkData.forEach((item) => {
+    if (item.image) {
+      const img = new Image();
+      img.src = item.image;
+    }
+  });
+}
+preloadProjectImages();
+
 const skillTabsList = [
   { id: "planning", code: "01", label: "PLANNING" },
   { id: "direction", code: "02", label: "DIRECTION" },
@@ -1095,10 +1106,18 @@ function updateProjectPreview(index) {
     previewIndexTag.textContent = `${(index + 1).toString().padStart(2, "0")} / ${slinkData.length}`;
   }
   if (previewCoverImg) {
-    previewCoverImg.style.opacity = "0.3";
-    previewCoverImg.src = item.image;
-    previewCoverImg.alt = item.title;
-    previewCoverImg.onload = () => { previewCoverImg.style.opacity = "1"; };
+    if (previewCoverImg.src && previewCoverImg.src.endsWith(item.image)) {
+      previewCoverImg.style.opacity = "1";
+    } else {
+      previewCoverImg.src = item.image;
+      previewCoverImg.alt = item.title;
+      if (previewCoverImg.complete) {
+        previewCoverImg.style.opacity = "1";
+      } else {
+        previewCoverImg.style.opacity = "0.3";
+        previewCoverImg.onload = () => { previewCoverImg.style.opacity = "1"; };
+      }
+    }
   }
   if (previewNumeralBadge) {
     previewNumeralBadge.textContent = item.numeral;
